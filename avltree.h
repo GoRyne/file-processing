@@ -52,9 +52,6 @@ extern inline void avl_insert(struct avl_node **restrict tree, int key, int valu
   struct avl_node *x = NULL;
 
   while (walk != NULL) {
-    // Q1 " What is destroy condition? " and " What is "less"? " 
-    // A 1-1. If key is already in the tree, destroy the stack and return.
-    // A 1-2. `less` is the operator defining the (partial) node order.
     if (key == walk->key) { destroy(&path); return; }
     push(&path, walk);
     walk = key < walk->key ? walk->left : walk->right;
@@ -79,8 +76,6 @@ extern inline void avl_insert(struct avl_node **restrict tree, int key, int valu
     }
   }
 
-  // Q2 Is this sentence mean conditon of tree already balenced?
-  // A2. Yes.
   if (x == NULL) return;
 
   // Balenced factor > 1 ( L child case)
@@ -111,7 +106,6 @@ extern inline void avl_insert(struct avl_node **restrict tree, int key, int valu
     }
   }
 
-  //Q3 Is there no situation for re-valenced over than 2 times in one insert? -> checked with drawing
   while (!empty(path)) {
     walk = pop(&path);
     walk->height = 1 + max(height(walk->left), height(walk->right));
